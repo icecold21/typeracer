@@ -1,0 +1,12 @@
+<h1>This is the lobby</h1>
+<div id="messages">
+</div>
+<textarea id="input" class="form-control" rows="5" placeholder="Type your message and hit enter....">
+</textarea>
+
+<style type="text/css">
+  #messages{
+    min-height: 300px;
+    background-color: #eee;
+  }
+</style>

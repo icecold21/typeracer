@@ -20,16 +20,28 @@ import "phoenix_html"
 
 import socket from "./socket"
 
+// Register a global custom directive called v-focus
+Vue.directive('focus', {
+  // When the bound element is inserted into the DOM...
+  inserted: function (el) {
+    // Focus the element
+    el.focus()
+  }
+})
 
+// game status 0 -> not started, 1 -> playing, 2 finished.
 var app = new Vue({
   el: '#app',
   data: {
     message: 'Welcome Phoenix Typer...',
-    textScript: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    textScript: "Lorem ipsum dolor sit amet.",
+    // textScript: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     textArray: [],
     currentIndex: 0,
+    wordCount: 0,
     textInput: "",
-    wrongCurrentText: false
+    wrongCurrentText: false,
+    gameStatus: 0
   },
   computed: {
     currentText: function () {
@@ -42,14 +54,27 @@ var app = new Vue({
       } else {
         return this.textInput.substr(0, spacePosition);
       }
+    },
+    currentTextInputRemaining: function(){
+      let spacePosition = this.textInput.indexOf(' ');
+      if (spacePosition === -1){
+        return this.textInput;
+      } else {
+        console.log("spacePosition", spacePosition);
+        console.log("this.textInput.length", this.textInput.length);
+        return this.textInput.substr(spacePosition, this.textInput.length);
+      }
     }
   },
   methods: {
     handleKeyUp: function (event) {
-      if(event.keyCode == 32){
-        this.handleSpace();
+      if(this.gameStatus !== 2){
+        if(event.keyCode == 32){
+          this.handleSpace();
+        }
+        this.checkError();
+        this.checkWin();
       }
-      this.checkError();
     },
     checkError(){
       if(!this.currentText.startsWith(this.currentTextInput)){
@@ -60,20 +85,31 @@ var app = new Vue({
         this.wrongCurrentText = false;
       }
     },
+    checkWin(){
+      if(this.wordCount === this.currentIndex + 1){
+        if(this.currentText === this.currentTextInput){
+          this.gameStatus = 2;
+          this.emtpyCurrentText();
+          alert("Fin.");
+        }
+      }
+    },
     handleSpace: function(){
       if(this.currentTextInput == this.currentText){
-        this.emptyTextInput();
+        this.emtpyCurrentText();
         this.incrementCurrentIndex();
       }
     },
     incrementCurrentIndex(){
       this.currentIndex += 1;
     },
-    emptyTextInput(){
+    emtpyCurrentText(){
+      // to do handle fast type
       this.textInput = "";
     }
   },
   mounted(){
     this.textArray = this.textScript.split(" ");
+    this.wordCount = this.textArray.length;
   }
 })

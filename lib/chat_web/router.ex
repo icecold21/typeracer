@@ -19,6 +19,7 @@ defmodule ChatWeb.Router do
     get "/", PageController, :index
 
     get "/room/:id", RoomController, :show
+    get "/game/:id", GameController, :show
   end
 
   # Other scopes may use custom stacks.

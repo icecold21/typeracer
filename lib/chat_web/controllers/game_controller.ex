@@ -1,4 +1,4 @@
-defmodule ChatWeb.RoomController do
+defmodule ChatWeb.GameController do
   use ChatWeb, :controller
 
   def show(conn, %{"id" => "lobby"}) do

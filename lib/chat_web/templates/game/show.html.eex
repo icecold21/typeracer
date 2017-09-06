@@ -1,0 +1,27 @@
+<div id="app">
+  <h3 v-cloak>{{ message }}</h3>
+  <div id="messages">
+     <span v-for="(item, index) in textArray"  v-bind:class="{ current: index === currentIndex,  'wrong-text': wrongCurrentText } " v-cloak>
+      {{ item }}
+    </span>
+  </div>
+  <textarea id="input" class="form-control" rows="5" placeholder="" v-on:keyup="handleKeyUp" v-model="textInput">
+  </textarea>
+</div>
+
+<style type="text/css">
+  #messages{
+    background-color: #eee;
+    padding: 2em;
+    font-size: 1.3em;
+  }
+  .current{
+    color: green;
+  }
+  .current.wrong-text{
+    background-color: #E99E9D;
+  }
+  [v-cloak]{
+    display: none;
+  }
+</style>

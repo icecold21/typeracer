@@ -5,7 +5,7 @@
       {{ item }}
     </span>
   </div>
-  <textarea id="input" class="form-control" rows="5" placeholder="" v-on:keyup="handleKeyUp" v-model="textInput">
+  <textarea id="input" class="form-control" rows="5" placeholder="" v-on:keyup="handleKeyUp" v-model="textInput" v-focus>
   </textarea>
 </div>
 
